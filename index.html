@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mading Digital | Aden Askolani Fahri</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Inter + Playfair Display -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Icons: Lucide -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* === CUSTOM STYLE === */
+    * { font-family: 'Inter', sans-serif; }
+   .font-serif { font-family: 'Playfair Display', serif; }
+
+    /* Smooth transition global */
+    * {
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Custom scrollbar emerald */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #022c22; }
+    ::-webkit-scrollbar-thumb { background: #10b981; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #34d399; }
+
+    /* Marquee animation */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* -50% karena kontennya kita dobel */
+}
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+  display: inline-flex; /* penting biar gak putus */
+}
+
+    /* Glass effect */
+   .glass {
+      background: rgba(2, 44, 34, 0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    /* Highlight search */
+    mark {
+      background: #fbbf24;
+      color: #022c22;
+      padding: 0 2px;
+      border-radius: 2px;
+    }
+  </style>
+</head>
+
+<body class="bg-emerald-950 text-emerald-50 min-h-screen antialiased">
+
+<!-- 1. MARQUEE SELAMAT DATANG - FIXED -->
+<div class="bg-emerald-900 border-b border-emerald-800 overflow-hidden">
+  <div class="flex">
+    <div class="animate-marquee whitespace-nowrap py-2 flex">
+      <!-- Tulis 2x biar nyambung pas loop -->
+      <span class="mx-8 text-sm text-emerald-300">Selamat datang di blog Aden Askolani Fahri</span>
+      <span class="mx-8 text-sm text-emerald-300">Selamat datang di blog Aden Askolani Fahri</span>
+      <span class="mx-8 text-sm text-emerald-300">Selamat datang di blog Aden Askolani Fahri</span>
+      <span class="mx-8 text-sm text-emerald-300">Selamat datang di blog Aden Askolani Fahri</span>
+      <!-- Duplikat lagi buat seamless loop -->
+      <span class="mx-8 text-sm text-emerald-300">Selamat datang di blog Aden Askolani Fahri</span>
+      <span class="mx-8 text-sm text-emerald-300">Selamat datang di blog Aden Askolani Fahri</span>
+      <span class="mx-8 text-sm text-emerald-300">Selamat datang di blog Aden Askolani Fahri</span>
+      <span class="mx-8 text-sm text-emerald-300">Selamat datang di blog Aden Askolani Fahri</span>
+    </div>
+  </div>
+</div>
+
+  <!-- 2. WIDGET JAM + SHOLAT + HIJRIAH -->
+  <div class="max-w-2xl mx-auto px-4 pt-6">
+    <div class="glass rounded-2xl p-4 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+      <div>
+        <p class="text-xs text-emerald-400 mb-1">Waktu Sekarang</p>
+        <p id="clock" class="text-2xl font-bold text-emerald-300">00:00:00</p>
+        <p id="date" class="text-xs text-emerald-500 mt-1">-</p>
+      </div>
+      <div>
+        <p class="text-xs text-emerald-400 mb-1">Jadwal Sholat</p>
+        <p id="nextPrayer" class="text-sm font-semibold text-emerald-200">Memuat...</p>
+        <p id="prayerTime" class="text-xs text-emerald-500 mt-1">-</p>
+      </div>
+      <div>
+        <p class="text-xs text-emerald-400 mb-1">Kalender Hijriah</p>
+        <p id="hijriDate" class="text-sm font-semibold text-emerald-200">-</p>
+        <p id="location" class="text-xs text-emerald-500 mt-1">-</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. HEADER PROFIL -->
+  <header class="max-w-2xl mx-auto px-4 pt-8 pb-6 text-center">
+    <div class="relative inline-block mb-4">
+      <img id="profileImg"
+           src="https://i.ibb.co/H0QDhkf/profile.jpg"
+           alt="Foto Profil"
+           class="w-24 h-24 rounded-full object-cover ring-4 ring-emerald-500/30 mx-auto">
+      <span class="absolute bottom-1 right-1 w-5 h-5 bg-emerald-400 rounded-full border-4 border-emerald-950"></span>
+    </div>
+    <h1 id="profileName" class="font-serif text-3xl font-bold text-emerald-100 mb-2">Aden Askolani Fahri</h1>
+    <p id="profileBio" class="text-emerald-300 mb-5">Mading Digital / Jurnal Kata & Cerita</p>
+
+<!-- Sosmed Icons - Pakai Logo Gambar -->
+<div class="flex justify-center gap-4">
+  <a href="https://www.facebook.com/share/1CAa7poJ2W/" target="_blank" class="w-10 h-10 glass rounded-xl flex items-center justify-center hover:bg-emerald-800 hover:scale-110 active:scale-95 p-2">
+    <img src="https://i.ibb.co/tphnzBvr/facebook.png" alt="Facebook" class="w-full h-full object-contain">
+  </a>
+  <a href="https://www.instagram.com/aden_askolani_fahri?igsh=MTR0MjY1ODV0aGszMA==" target="_blank" class="w-10 h-10 glass rounded-xl flex items-center justify-center hover:bg-emerald-800 hover:scale-110 active:scale-95 p-2">
+    <img src="https://i.ibb.co/mr4Kh2Cg/instagram.png" alt="Instagram" class="w-full h-full object-contain">
+  </a>
+  <button onclick="showWaModal()" class="w-10 h-10 glass rounded-xl flex items-center justify-center hover:bg-emerald-800 hover:scale-110 active:scale-95 p-2">
+    <img src="https://i.ibb.co/gLVgP5p7/whatsapp.png" alt="WhatsApp" class="w-full h-full object-contain">
+  </button>
+</div>
+  </header>
+
+  <!-- 4. SEARCH BAR -->
+  <div class="max-w-2xl mx-auto px-4 mb-6">
+    <div class="relative">
+      <i data-lucide="search" class="w-5 h-5 text-emerald-500 absolute left-4 top-1/2 -translate-y-1/2"></i>
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Cari kata atau cerita..."
+        class="w-full bg-emerald-900/50 border border-emerald-800 rounded-xl pl-12 pr-4 py-3 text-sm text-emerald-100 placeholder-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+    </div>
+  </div>
+
+  <!-- 5. TAB NAVIGATION -->
+  <div class="max-w-2xl mx-auto px-4 mb-6">
+    <div class="glass rounded-xl p-1.5 flex gap-1.5">
+      <button onclick="switchTab('quotes')" id="tabQuotes"
+              class="flex-1 py-2.5 rounded-lg text-sm font-semibold bg-emerald-600 text-white">
+        Bait Kata
+      </button>
+      <button onclick="switchTab('stories')" id="tabStories"
+              class="flex-1 py-2.5 rounded-lg text-sm font-semibold text-emerald-300 hover:bg-emerald-900/50">
+        Daftar Cerita
+      </button>
+    </div>
+  </div>
+
+  <!-- 6. CONTENT: QUOTES -->
+  <main id="contentQuotes" class="max-w-2xl mx-auto px-4 pb-20 space-y-4">
+    <!-- Quotes bakal di-render via JS -->
+  </main>
+
+  <!-- 7. CONTENT: STORIES -->
+  <main id="contentStories" class="max-w-2xl mx-auto px-4 pb-20 space-y-3 hidden">
+    <!-- Stories accordion bakal di-render via JS -->
+  </main>
+
+  <!-- 8. FOOTER -->
+  <footer class="max-w-2xl mx-auto px-4 py-8 text-center border-t border-emerald-900">
+    <p class="text-xs text-emerald-600">© <span id="year"></span> Aden Askolani Fahri. Dibuat secara mandiri.</p>
+  </footer>
+
+  <!-- 9. MODAL PASSWORD WA -->
+  <div id="waModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="glass rounded-2xl p-6 w-full max-w-sm">
+      <h3 class="font-serif text-xl font-bold text-emerald-100 mb-2">Akses WhatsApp</h3>
+      <p class="text-sm text-emerald-400 mb-4">Masukkan sandi untuk melihat nomor</p>
+      <input
+        type="password"
+        id="waPassword"
+        placeholder="Kata sandi..."
+        class="w-full bg-emerald-900/50 border border-emerald-800 rounded-lg px-4 py-2.5 text-sm text-emerald-100 mb-4 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+      <div id="waResult" class="hidden mb-4 p-3 bg-emerald-900/50 rounded-lg">
+        <p class="text-xs text-emerald-400 mb-1">Nomor WhatsApp:</p>
+        <p class="text-lg font-bold text-emerald-200 mb-3" id="waNumber"></p>
+        <a id="waLink" href="#" target="_blank" class="block w-full bg-emerald-600 hover:bg-emerald-500 text-white text-center py-2.5 rounded-lg text-sm font-semibold active:scale-95">
+          Chat Sekarang
+        </a>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="checkWaPassword()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-lg text-sm font-semibold active:scale-95">
+          Buka
+        </button>
+        <button onclick="closeWaModal()" class="px-5 bg-emerald-900 hover:bg-emerald-800 text-emerald-300 py-2.5 rounded-lg text-sm font-semibold active:scale-95">
+          Tutup
+        </button>
+      </div>
+      <p id="waError" class="text-xs text-red-400 mt-3 hidden">Sandi salah!</p>
+    </div>
+  </div>
+
+  <!-- 10. TOAST NOTIF -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-emerald-600 text-white px-5 py-3 rounded-xl text-sm font-semibold shadow-lg shadow-emerald-900/50 translate-y-20 opacity-0 pointer-events-none">
+    Tersalin!
+  </div>
+
+  <script>
+    // === KONFIGURASI ===
+    const WA_PASSWORD = "aden2026"; // Ganti sandi di sini
+    const profileData = {
+      name: "Aden Askolani Fahri",
+      bio: "Mading Digital / Jurnal Kata & Cerita",
+      image: "https://i.ibb.co/H0QDhkf/profile.jpg",
+      wa: "+62 857-7364-1591"
+    };
+
+    // === DATA KONTEN ===
+    const quotesData = [
+      {
+        id: 1,
+        text: "Kata-kata adalah jembatan antara hati yang diam dan dunia yang bising.",
+        date: "6 Jul 2026"
+      },
+      {
+        id: 2,
+        text: "Menulis bukan untuk dikenang, tapi agar luka punya tempat pulang.",
+        date: "5 Jul 2026"
+      },
+      {
+        id: 3,
+        text: "Di antara jeda napas, ada cerita yang tak sempat terucap.",
+        date: "3 Jul 2026"
+      }
+    ];
+
+    const storiesData = [
+      {
+        id: 1,
+        title: "Hujan di Beranda",
+        content: "Sore itu hujan turun tanpa permisi. Aku duduk di beranda dengan secangkir kopi yang sudah dingin. Di ujung jalan, seorang anak kecil berlari sambil tertawa, menantang rintik yang jatuh. Ibunya berteriak dari pintu, tapi tawanya lebih kencang dari teguran. Aku tersenyum. Kadang, kebahagiaan sesederhana berani basah.",
+        date: "4 Jul 2026",
+        readTime: "2 menit"
+      },
+      {
+        id: 2,
+        title: "Surat yang Tak Terkirim",
+        content: "Laci meja itu penuh dengan kertas yang terlipat rapi. Semuanya alamatmu. Semuanya tak pernah sampai. Bukan karena aku tak berani mengirim, tapi karena aku tahu, beberapa kata lebih baik tinggal di antara tinta dan doa. Biarlah kau bahagia tanpa tahu, bahwa di sini ada yang menulis namamu setiap malam.",
+        date: "1 Jul 2026",
+        readTime: "3 menit"
+      }
+    ];
+
+    // === INIT LUCIDE ICONS ===
+    lucide.createIcons();
+
+    // === JAM REALTIME ===
+    function updateClock() {
+      const now = new Date();
+      const time = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      const date = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      document.getElementById('clock').textContent = time;
+      document.getElementById('date').textContent = date;
+    }
+    setInterval(updateClock, 1000);
+
+// === TAHUN HIJRIAH - FIX NAMA BULAN ===
+function getHijriDate() {
+  const today = new Date();
+  
+  // Ambil angka Hijriah pakai Intl
+  const hijriFormatter = new Intl.DateTimeFormat('en-TN-u-ca-islamic', {
+    day: 'numeric',
+    month: 'numeric', 
+    year: 'numeric'
+  });
+  
+  const parts = hijriFormatter.formatToParts(today);
+  const hijriDay = parts.find(p => p.type === 'day').value;
+  const hijriMonth = parseInt(parts.find(p => p.type === 'month').value);
+  const hijriYear = parts.find(p => p.type === 'year').value;
+  
+  // Nama bulan Hijriah manual biar gak salah
+  const hijriMonths = [
+    'Muharram', 'Safar', 'Rabiul Awal', 'Rabiul Akhir',
+    'Jumadil Awal', 'Jumadil Akhir', 'Rajab', 'Sya\'ban',
+    'Ramadhan', 'Syawal', 'Dzulqa\'dah', 'Dzulhijjah'
+  ];
+  
+  const hijriDateString = `${hijriDay} ${hijriMonths[hijriMonth - 1]} ${hijriYear} H`;
+  document.getElementById('hijriDate').textContent = hijriDateString;
+}
+
+    // === JADWAL SHOLAT ===
+    async function getPrayerTimes() {
+      try {
+        // Coba ambil lokasi user
+        const position = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 });
+        });
+
+        const { latitude, longitude } = position.coords;
+        const response = await fetch(`https://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=20`);
+        const data = await response.json();
+
+        const timings = data.data.timings;
+        const city = data.data.meta.timezone;
+
+        document.getElementById('location').textContent = city.split('/')[1] || 'Lokasi Anda';
+
+        // Cari sholat berikutnya
+        const now = new Date();
+        const prayerNames = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+        const prayerLabels = ['Subuh', 'Dzuhur', 'Ashar', 'Maghrib', 'Isya'];
+
+        for (let i = 0; i < prayerNames.length; i++) {
+          const [hour, minute] = timings[prayerNames[i]].split(':');
+          const prayerTime = new Date();
+          prayerTime.setHours(hour, minute, 0);
+
+          if (prayerTime > now) {
+            document.getElementById('nextPrayer').textContent = prayerLabels[i];
+            document.getElementById('prayerTime').textContent = timings[prayerNames[i]] + ' WIB';
+            return;
+          }
+        }
+
+        // Kalau udah lewat Isya, tampilkan Subuh besok
+        document.getElementById('nextPrayer').textContent = 'Subuh';
+        document.getElementById('prayerTime').textContent = timings.Fajr + ' WIB (Besok)';
+
+      } catch (error) {
+        // Fallback ke Jakarta kalau gagal
+        document.getElementById('nextPrayer').textContent = 'Jakarta';
+        document.getElementById('prayerTime').textContent = 'Gagal ambil lokasi';
+        document.getElementById('location').textContent = 'Aktifkan GPS';
+      }
+    }
+
+    // === RENDER QUOTES ===
+    function renderQuotes(filter = '') {
+      const container = document.getElementById('contentQuotes');
+      const filtered = quotesData.filter(q =>
+        q.text.toLowerCase().includes(filter.toLowerCase())
+      );
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<p class="text-center text-emerald-600 py-10">Tidak ada bait kata ditemukan</p>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(quote => {
+        const highlightedText = filter
+         ? quote.text.replace(new RegExp(filter, 'gi'), match => `<mark>${match}</mark>`)
+          : quote.text;
+
+        return `
+          <div class="glass rounded-2xl p-5 hover:bg-emerald-900/40 hover:-translate-y-0.5">
+            <p class="text-emerald-100 leading-relaxed mb-4">${highlightedText}</p>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-emerald-500">${quote.date}</span>
+              <button onclick="copyQuote('${quote.text.replace(/'/g, "\\'")}')"
+                      class="flex items-center gap-1.5 text-xs text-emerald-400 hover:text-emerald-300 active:scale-95">
+                <i data-lucide="copy" class="w-4 h-4"></i>
+                Salin Kata
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    // === RENDER STORIES ===
+    function renderStories(filter = '') {
+      const container = document.getElementById('contentStories');
+      const filtered = storiesData.filter(s =>
+        s.title.toLowerCase().includes(filter.toLowerCase()) ||
+        s.content.toLowerCase().includes(filter.toLowerCase())
+      );
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<p class="text-center text-emerald-600 py-10">Tidak ada cerita ditemukan</p>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(story => {
+        const highlightedTitle = filter
+         ? story.title.replace(new RegExp(filter, 'gi'), match => `<mark>${match}</mark>`)
+          : story.title;
+
+        return `
+          <div class="glass rounded-2xl overflow-hidden">
+            <button onclick="toggleAccordion(${story.id})"
+                    class="w-full p-5 text-left flex items-center justify-between hover:bg-emerald-900/40 active:scale-[0.98]">
+              <div class="flex-1">
+                <h3 class="font-serif font-bold text-emerald-100 mb-1">${highlightedTitle}</h3>
+                <div class="flex items-center gap-3 text-xs text-emerald-500">
+                  <span>${story.date}</span>
+                  <span>•</span>
+                  <span>${story.readTime}</span>
+                </div>
+              </div>
+              <i data-lucide="chevron-down" id="icon-${story.id}" class="w-5 h-5 text-emerald-400 transition-transform"></i>
+            </button>
+            <div id="content-${story.id}" class="max-h-0 overflow-hidden transition-all duration-500">
+              <div class="px-5 pb-5 text-emerald-200 leading-relaxed text-sm">
+                ${story.content}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    // === TOGGLE ACCORDION ===
+    function toggleAccordion(id) {
+      const content = document.getElementById(`content-${id}`);
+      const icon = document.getElementById(`icon-${id}`);
+
+      if (content.style.maxHeight && content.style.maxHeight!== '0px') {
+        content.style.maxHeight = '0px';
+        icon.style.transform = 'rotate(0deg)';
+      } else {
+        content.style.maxHeight = content.scrollHeight + 'px';
+        icon.style.transform = 'rotate(180deg)';
+      }
+    }
+
+    // === SWITCH TAB ===
+    let activeTab = 'quotes';
+    function switchTab(tab) {
+      activeTab = tab;
+      const tabQuotes = document.getElementById('tabQuotes');
+      const tabStories = document.getElementById('tabStories');
+      const contentQuotes = document.getElementById('contentQuotes');
+      const contentStories = document.getElementById('contentStories');
+
+      if (tab === 'quotes') {
+        tabQuotes.className = 'flex-1 py-2.5 rounded-lg text-sm font-semibold bg-emerald-600 text-white';
+        tabStories.className = 'flex-1 py-2.5 rounded-lg text-sm font-semibold text-emerald-300 hover:bg-emerald-900/50';
+        contentQuotes.classList.remove('hidden');
+        contentStories.classList.add('hidden');
+      } else {
+        tabStories.className = 'flex-1 py-2.5 rounded-lg text-sm font-semibold bg-emerald-600 text-white';
+        tabQuotes.className = 'flex-1 py-2.5 rounded-lg text-sm font-semibold text-emerald-300 hover:bg-emerald-900/50';
+        contentStories.classList.remove('hidden');
+        contentQuotes.classList.add('hidden');
+      }
+
+      // Re-apply search filter
+      searchContent();
+    }
+
+    // === SEARCH FUNCTION ===
+    function searchContent() {
+      const query = document.getElementById('searchInput').value;
+      if (activeTab === 'quotes') {
+        renderQuotes(query);
+      } else {
+        renderStories(query);
+      }
+    }
+    document.getElementById('searchInput').addEventListener('input', searchContent);
+
+    // === COPY QUOTE ===
+    function copyQuote(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('Bait kata tersalin!');
+      }).catch(() => {
+        // Fallback
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showToast('Bait kata tersalin!');
+      });
+    }
+
+    // === TOAST NOTIFICATION ===
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2000);
+    }
+
+    // === WA MODAL ===
+    function showWaModal() {
+      document.getElementById('waModal').classList.remove('hidden');
+      document.getElementById('waModal').classList.add('flex');
+      document.getElementById('waPassword').focus();
+    }
+
+    function closeWaModal() {
+      document.getElementById('waModal').classList.add('hidden');
+      document.getElementById('waModal').classList.remove('flex');
+      document.getElementById('waPassword').value = '';
+      document.getElementById('waResult').classList.add('hidden');
+      document.getElementById('waError').classList.add('hidden');
+    }
+
+    function checkWaPassword() {
+      const input = document.getElementById('waPassword').value;
+      const error = document.getElementById('waError');
+      const result = document.getElementById('waResult');
+
+      if (input === WA_PASSWORD) {
+        document.getElementById('waNumber').textContent = profileData.wa;
+        document.getElementById('waLink').href = `https://wa.me/${profileData.wa.replace(/\D/g, '')}`;
+        result.classList.remove('hidden');
+        error.classList.add('hidden');
+      } else {
+        error.classList.remove('hidden');
+        result.classList.add('hidden');
+      }
+    }
+
+    // Enter key untuk submit password
+    document.getElementById('waPassword').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') checkWaPassword();
+    });
+
+    // === INIT ===
+    document.addEventListener('DOMContentLoaded', () => {
+      updateClock();
+      getHijriDate();
+      getPrayerTimes();
+      renderQuotes();
+      renderStories();
+      document.getElementById('year').textContent = new Date().getFullYear();
+    });
+  </script>
+</body>
+</html>
