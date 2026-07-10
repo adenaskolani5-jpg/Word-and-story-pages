@@ -92,6 +92,136 @@
   background: radial-gradient(circle, rgba(0,255,148,0.4) 0%, transparent 70%);
   animation: success-burst 0.6s ease-out;
 }
+/* === KARTU BAIT KATA - GLOW DIEM DI SISI === */
+.tilt-card {
+  position: relative;
+  background: rgba(15, 15, 15, 0.95);
+  border: 1px solid rgba(0, 255, 148, 0.15);
+  border-radius: 1rem;
+  box-shadow: 
+    0 0 0 1px rgba(0, 255, 148, 0.1),
+    0 0 24px rgba(0, 255, 148, 0.12),
+    0 0 48px rgba(0, 255, 148, 0.06),
+    0 4px 24px rgba(0, 0, 0, 0.5);
+  transform-style: preserve-3d;
+  transform: perspective(1000px);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Glow tipis di pinggiran - diem gak muter */
+.tilt-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 148, 0.3) 0%,
+    transparent 25%,
+    transparent 75%,
+    rgba(0, 255, 148, 0.3) 100%
+  );
+  border-radius: 1rem;
+  opacity: 0.6;
+  z-index: -1;
+  /* Gak ada animasi */
+}
+
+/* Hover - glow sisi makin terang tapi tetep diem */
+.tilt-card:hover {
+  border-color: rgba(0, 255, 148, 0.4);
+  box-shadow: 
+    0 0 0 1px rgba(0, 255, 148, 0.25),
+    0 0 32px rgba(0, 255, 148, 0.25),
+    0 0 64px rgba(0, 255, 148, 0.12),
+    0 8px 32px rgba(0, 0, 0, 0.6);
+  transform: perspective(1000px) translateY(-4px);
+}
+
+.tilt-card:hover::before {
+  opacity: 1;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 148, 0.5) 0%,
+    transparent 25%,
+    transparent 75%,
+    rgba(0, 255, 148, 0.5) 100%
+  );
+}
+
+/* HP - tap glow */
+@media (hover: none) {
+  .tilt-card:active {
+    transform: scale(0.98);
+    border-color: rgba(0, 255, 148, 0.45);
+    box-shadow: 
+      0 0 0 1px rgba(0, 255, 148, 0.3),
+      0 0 28px rgba(0, 255, 148, 0.3),
+      0 4px 20px rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* Teks bersih tanpa glow */
+.quote-text {
+  position: relative;
+  z-index: 1;
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: #EAEAEA;
+  font-weight: 300;
+  letter-spacing: 0.015em;
+  text-shadow: none;
+}
+
+@media (min-width: 640px) {
+  .quote-text {
+    font-size: 1.08rem;
+    line-height: 1.85;
+  }
+}
+
+/* Drop cap - tanpa glow */
+.quote-text::first-letter {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-weight: 600;
+  float: left;
+  line-height: 0.85;
+  margin-right: 8px;
+  margin-top: 3px;
+  background: linear-gradient(135deg, #00FF94 0%, #4ADE80 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (min-width: 640px) {
+  .quote-text::first-letter {
+    font-size: 2.8rem;
+    margin-right: 10px;
+    margin-top: 5px;
+  }
+}
+
+.quote-meta {
+  position: relative;
+  z-index: 1;
+  padding-top: 14px;
+  margin-top: 14px;
+  border-top: 1px solid rgba(0, 255, 148, 0.08);
+}
+.glass { 
+  background: rgba(10,10,10,0.8); 
+  backdrop-filter: blur(16px); 
+  border: 1px solid rgba(0,255,148,0.1); 
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4); 
+}
+.glass:hover { 
+  border-color: rgba(0,255,148,0.2); 
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 20px rgba(0,255,148,0.1); 
+  transform: translateY(-2px); 
+}
 </style>
 </head>
 
@@ -115,21 +245,17 @@
 
 <!-- 2. WIDGET -->
 <div class="max-w-2xl mx-auto px-4 pt-6">
-  <div class="glass rounded-2xl p-4 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+  <div class="glass rounded-2xl p-4 grid grid-cols-2 sm:grid-cols-3 gap-4 text-center">
     <div>
       <p class="text-xs text-emerald-400/60 mb-1">Waktu Sekarang</p>
-      <p id="clock" class="text-2xl font-bold text-gradient">00:00:00</p>
-      <p id="date" class="text-xs text-neutral-500 mt-1">-</p>
+      <p id="clock" class="text-xl sm:text-2xl font-bold text-gradient">00:00:00</p>
+      <p id="date" class="text- sm:text-xs text-neutral-500 mt-1">-</p>
     </div>
     <div>
-      <p class="text-xs text-emerald-400/60 mb-1">Jadwal Sholat</p>
-      <p id="nextPrayer" class="text-sm font-semibold text-neutral-100 shimmer">Memuat...</p>
-      <p id="prayerTime" class="text-xs text-neutral-500 mt-1">-</p>
-    </div>
-    <div>
+    <div class="col-span-2 sm:col-span-1">
       <p class="text-xs text-emerald-400/60 mb-1">Kalender Hijriah</p>
       <p id="hijriDate" class="text-sm font-semibold text-neutral-100">-</p>
-      <p id="location" class="text-xs text-neutral-500 mt-1">-</p>
+      <p id="location" class="text- sm:text-xs text-neutral-500 mt-1">-</p>
     </div>
   </div>
 </div>
@@ -149,9 +275,9 @@
     <a href="https://www.instagram.com/aden_askolani_fahri?igsh=MTR0MjY1ODV0aGszMA==" target="_blank" class="ripple magnetic w-10 h-10 glass rounded-xl flex items-center justify-center hover:bg-emerald-400/10 active:scale-95 p-2">
       <img src="https://i.ibb.co/mr4Kh2Cg/instagram.png" alt="Instagram" class="w-full h-full object-contain">
     </a>
-    <button onclick="showWaModal()" class="ripple magnetic w-10 h-10 glass rounded-xl flex items-center justify-center hover:bg-emerald-400/10 active:scale-95 p-2">
-      <img src="https://i.ibb.co/gLVgP5p7/whatsapp.png" alt="WhatsApp" class="w-full h-full object-contain">
-    </button>
+    <a href="https://wa.me/6285773641591" target="_blank" class="ripple magnetic w-10 h-10 glass rounded-xl flex items-center justify-center hover:bg-emerald-400/10 active:scale-95 p-2">
+  <img src="https://i.ibb.co/gLVgP5p7/whatsapp.png" alt="WhatsApp" class="w-full h-full object-contain">
+</a>
   </div>
 </header>
 
@@ -283,32 +409,6 @@
       <h3 class="font-serif text-xl font-bold text-gradient mb-2">Lokasi Ditemukan!</h3>
       <p id="locationNameSuccess" class="text-sm text-emerald-400/80 mb-4">-</p>
     </div>
-
-  </div>
-</div>
-
-<!-- 8. MODAL WA -->
-<div id="waModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-  <div class="glass rounded-2xl p-6 w-full max-w-sm">
-    <h3 class="font-serif text-xl font-bold text-gradient mb-2">Akses WhatsApp</h3>
-    <p class="text-sm text-emerald-400/80 mb-4">Masukkan sandi untuk melihat nomor</p>
-    <input type="password" id="waPassword" placeholder="Kata sandi..." class="w-full bg-black/50 border border-emerald-500/10 rounded-lg px-4 py-2.5 text-sm text-neutral-100 mb-4 focus:outline-none focus:ring-2 focus:ring-emerald-400/20">
-    <div id="waResult" class="hidden mb-4 p-3 bg-black/50 rounded-lg">
-      <p class="text-xs text-emerald-400/60 mb-1">Nomor WhatsApp:</p>
-      <p class="text-lg font-bold text-neutral-100 mb-3" id="waNumber"></p>
-      <a id="waLink" href="#" target="_blank" class="ripple block w-full bg-gradient-to-r from-emerald-400 to-green-400 text-black text-center py-2.5 rounded-lg text-sm font-semibold active:scale-95">
-        Chat Sekarang
-      </a>
-    </div>
-    <div class="flex gap-2">
-      <button onclick="checkWaPassword()" class="ripple flex-1 bg-gradient-to-r from-emerald-400 to-green-400 text-black py-2.5 rounded-lg text-sm font-semibold active:scale-95">
-        Buka
-      </button>
-      <button onclick="closeWaModal()" class="ripple px-5 bg-neutral-900 hover:bg-neutral-800 text-neutral-300 py-2.5 rounded-lg text-sm font-semibold active:scale-95">
-        Tutup
-      </button>
-    </div>
-    <p id="waError" class="text-xs text-red-400 mt-3 hidden">Sandi salah!</p>
   </div>
 </div>
 
@@ -886,26 +986,26 @@ function renderQuotes(filter = '') {
   const container = document.getElementById('contentQuotes');
   const sorted = [...quotesData].sort((a, b) => a.text.length - b.text.length);
   const filtered = sorted.filter(q => q.text.toLowerCase().includes(filter.toLowerCase()));
-  
+
   if (filtered.length === 0) {
     container.innerHTML = `<p class="text-center text-neutral-600 py-10">Tidak ada bait kata ditemukan</p>`;
     return;
   }
-  
+
   container.innerHTML = filtered.map(quote => {
     const highlightedText = filter? quote.text.replace(new RegExp(filter, 'gi'), match => `<mark>${match}</mark>`) : quote.text;
     return `
-      <div onclick="openReader('quote', ${quote.id})" class="tilt-card glass rounded-2xl p-5 hover:border-emerald-400/30 cursor-pointer active:scale-[0.98]">
-        <p class="text-neutral-100 leading-relaxed mb-4">${highlightedText}</p>
-        <div class="flex items-center justify-between">
-          <div class="text-xs">
-            <span class="text-emerald-400 font-semibold">${quote.author}</span>
-            <span class="text-emerald-500/60 mx-2">•</span>
-            <span class="text-emerald-500/60">${quote.date}</span>
+      <div onclick="openReader('quote', ${quote.id})" class="tilt-card glass rounded-xl sm:rounded-2xl p-4 sm:p-6 cursor-pointer scroll-reveal">
+        <p class="quote-text">${highlightedText}</p>
+        <div class="quote-meta flex items-center justify-between">
+          <div class="text- sm:text-xs">
+            <span class="text-emerald-400/90 font-medium">${quote.author}</span>
+            <span class="text-emerald-500/40 mx-1.5 sm:mx-2">•</span>
+            <span class="text-emerald-500/50">${quote.date}</span>
           </div>
-          <button type="button" data-text="${encodeURIComponent(quote.text)}" onclick="copyQuote(event, this)" class="ripple flex items-center gap-1.5 text-xs text-emerald-400 hover:text-[#00FF94] active:scale-95">
-            <i data-lucide="copy" class="w-4 h-4"></i>
-            Salin Kata
+          <button type="button" onclick="shareQuote(event, ${quote.id})" class="ripple flex items-center gap-1 sm:gap-1.5 text- sm:text-xs text-emerald-400/80 hover:text-[#00FF94] active:scale-95 transition-colors">
+            <i data-lucide="share-2" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+            <span class="hidden sm:inline">Bagikan</span>
           </button>
         </div>
       </div>
@@ -913,6 +1013,27 @@ function renderQuotes(filter = '') {
   }).join('');
   lucide.createIcons();
   initTilt();
+  initScrollReveal(); // <-- Tambah ini
+}
+
+function initScrollReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('show');
+        // Unobserve biar cuma animasi sekali, lebih ringan
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.1, // Muncul pas 10% kartu keliatan
+    rootMargin: '0px 0px -50px 0px' // Trigger 50px sebelum bener2 masuk layar
+  });
+
+  // Observe semua kartu yang punya class scroll-reveal
+  document.querySelectorAll('.scroll-reveal').forEach(card => {
+    observer.observe(card);
+  });
 }
 
   function renderStories(filter = '') {
@@ -985,8 +1106,8 @@ function renderQuotes(filter = '') {
   }
   document.getElementById('searchInput').addEventListener('input', searchContent);
 
-  function copyQuote(e, btn) {
-  e.stopPropagation(); // FIX: Wajib biar gak buka reader
+function copyQuote(e, btn) {
+  e.stopPropagation();
   e.preventDefault();
   
   const text = decodeURIComponent(btn.getAttribute('data-text'));
@@ -1005,6 +1126,79 @@ function renderQuotes(filter = '') {
     showToast('Bait kata tersalin!');
   });
 }
+async function shareQuote(e, id) {
+  e.stopPropagation();
+  e.preventDefault();
+
+  const quote = quotesData.find(q => q.id === id);
+  if (!quote) return;
+
+  const shareText = `"${quote.text}"\n\n— ${quote.author}`;
+  const shareUrl = `${window.location.origin}${window.location.pathname}#quote-${quote.id}`;
+
+  // Cek kalau HP support native share
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: 'Bait Kata dari Aden',
+        text: shareText,
+        url: shareUrl
+      });
+    } catch (err) {
+      if (err.name!== 'AbortError') showToast('Gagal membagikan');
+    }
+  } else {
+    // Fallback desktop: buka modal share simple
+    showShareModal(shareText, shareUrl);
+  }
+}
+
+function showShareModal(text, url) {
+  const encodedText = encodeURIComponent(text);
+  const encodedUrl = encodeURIComponent(url);
+
+  const modal = document.createElement('div');
+  modal.id = 'shareModal';
+  modal.className = 'fixed inset-0 bg-black/70 backdrop-blur-sm z-[103] flex items-center justify-center p-4';
+  modal.innerHTML = `
+    <div class="glass rounded-2xl p-6 w-full max-w-sm">
+      <h3 class="font-serif text-xl font-bold text-gradient mb-4">Bagikan Bait Kata</h3>
+      <div class="grid grid-cols-2 gap-3 mb-4">
+        <a href="https://wa.me/?text=${encodedText}%20${encodedUrl}" target="_blank" class="ripple flex items-center justify-center gap-2 bg-[#25D366] text-black py-2.5 rounded-lg text-sm font-semibold active:scale-95">
+          <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp
+        </a>
+        <a href="https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}" target="_blank" class="ripple flex items-center justify-center gap-2 bg-black text-white py-2.5 rounded-lg text-sm font-semibold active:scale-95 border border-neutral-700">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> Twitter
+        </a>
+        <a href="https://t.me/share/url?url=${encodedUrl}&text=${encodedText}" target="_blank" class="ripple flex items-center justify-center gap-2 bg-[#0088cc] text-white py-2.5 rounded-lg text-sm font-semibold active:scale-95">
+          <i data-lucide="send" class="w-4 h-4"></i> Telegram
+        </a>
+        <button onclick="copyShareLink('${url}')" class="ripple flex items-center justify-center gap-2 bg-neutral-800 text-neutral-100 py-2.5 rounded-lg text-sm font-semibold active:scale-95">
+          <i data-lucide="link" class="w-4 h-4"></i> Salin Link
+        </button>
+      </div>
+      <button onclick="closeShareModal()" class="ripple w-full bg-neutral-900 hover:bg-neutral-800 text-neutral-300 py-2.5 rounded-lg text-sm font-semibold active:scale-95">
+        Tutup
+      </button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  lucide.createIcons();
+  document.body.style.overflow = 'hidden';
+}
+
+function copyShareLink(url) {
+  navigator.clipboard.writeText(url).then(() => {
+    showToast('Link tersalin!');
+    closeShareModal();
+  });
+}
+
+function closeShareModal() {
+  const modal = document.getElementById('shareModal');
+  if (modal) modal.remove();
+  document.body.style.overflow = '';
+}
 
   function showToast(message) {
     const toast = document.getElementById('toast');
@@ -1016,38 +1210,6 @@ function renderQuotes(filter = '') {
       toast.classList.remove('toast-show');
     }, 2500);
   }
-
-  function showWaModal() {
-    document.getElementById('waModal').classList.remove('hidden');
-    document.getElementById('waModal').classList.add('flex');
-    document.getElementById('waPassword').focus();
-  }
-
-  function closeWaModal() {
-    document.getElementById('waModal').classList.add('hidden');
-    document.getElementById('waModal').classList.remove('flex');
-    document.getElementById('waPassword').value = '';
-    document.getElementById('waResult').classList.add('hidden');
-    document.getElementById('waError').classList.add('hidden');
-  }
-
-  function checkWaPassword() {
-    const input = document.getElementById('waPassword').value;
-    const error = document.getElementById('waError');
-    const result = document.getElementById('waResult');
-    if (input === WA_PASSWORD) {
-      document.getElementById('waNumber').textContent = profileData.wa;
-      document.getElementById('waLink').href = `https://wa.me/${profileData.wa.replace(/\D/g, '')}`;
-      result.classList.remove('hidden');
-      error.classList.add('hidden');
-    } else {
-      error.classList.remove('hidden');
-      result.classList.add('hidden');
-    }
-  }
-  document.getElementById('waPassword').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') checkWaPassword();
-  });
 
   function initMagnetic() {
     document.querySelectorAll('.magnetic').forEach(btn => {
@@ -1063,23 +1225,23 @@ function renderQuotes(filter = '') {
     });
   }
 
-  function initTilt() {
-    document.querySelectorAll('.tilt-card').forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const rotateX = (y - centerY) / 10;
-        const rotateY = (centerX - x) / 10;
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
-      });
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
-      });
+function initTilt() {
+  document.querySelectorAll('.tilt-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = (y - centerY) / 10;
+      const rotateY = (centerX - x) / 10;
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
     });
-  }
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+    });
+  });
+}
 
   // === READER STATE ===
   let readerState = {
@@ -1310,15 +1472,38 @@ function applyAllReaderSettings() {
     }
   });
 
-  document.addEventListener('DOMContentLoaded', () => {
-    updateClock();
-    getHijriDate();
-    getPrayerTimes();
-    renderQuotes();
-    renderStories();
-    document.getElementById('year').textContent = new Date().getFullYear();
-    initMagnetic();
-  });
+document.addEventListener('DOMContentLoaded', () => {
+  updateClock();
+  getHijriDate();
+  renderQuotes();
+  renderStories();
+  initScrollReveal(); // <-- Tambah ini
+  document.getElementById('year').textContent = new Date().getFullYear();
+  initMagnetic();
+
+  // Auto buka quote dari URL hash
+  if (window.location.hash.startsWith('#quote-')) {
+    const id = parseInt(window.location.hash.split('-')[1]);
+    if (id) setTimeout(() => openReader('quote', id), 500);
+  }
+
+  if (!locationPermissionAsked) {
+    setTimeout(() => showLocationModal(), 1000);
+  } else {
+    navigator.permissions.query({name:'geolocation'}).then(result => {
+      if (result.state === 'granted') {
+        navigator.geolocation.getCurrentPosition(pos => {
+          fetchPrayerTimes(pos.coords.latitude, pos.coords.longitude);
+        });
+      } else {
+        fetchPrayerTimes(-6.2088, 106.8456);
+        document.getElementById('nextPrayer').textContent = 'Jakarta';
+        document.getElementById('prayerTime').textContent = 'Default';
+        document.getElementById('location').textContent = 'Lokasi default';
+      }
+    });
+  }
+});
 </script>
 </body>
 </html>
